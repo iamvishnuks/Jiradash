@@ -20,8 +20,13 @@ def get_ticket():
     p3 = []
     p4 = []
     p1n = []
+    changereq = []
     for i in res['issues']:
         try:
+            if i['fields']['issuetype']['name'] =='Change':
+              change_start = i['fields']['customfield_10022']
+              change_stop = i['fields']['customfield_10023']
+              changereq.append({'ticket_id':i['key'],'start':change_start,'stop':change_stop})
             if i['fields']['priority']['name'] == 'Highest':
                 timeleft = i['fields']['customfield_10034']['ongoingCycle']['remainingTime']['friendly']
                 if '-' in timeleft:
@@ -70,7 +75,7 @@ def get_ticket():
         except Exception as e:
             print 'error',e
     new_p1 = list(set(p1n) - set(op1))
-    response = {'tickets': [p1,p2,p3,p4],'new_p1': new_p1}
+    response = {'tickets': [p1,p2,p3,p4],'new_p1': new_p1,'change':changereq}
     op1 = p1n[:]
     return response
 
@@ -86,4 +91,4 @@ def tickets():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0',debug=True)

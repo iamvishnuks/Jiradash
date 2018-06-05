@@ -5,6 +5,7 @@ var p4;
 var days;
 
 $(document).ready(function(){
+function myfun(){
    jQuery.ajax({
        method: "GET",
        url: "/tickets",
@@ -19,20 +20,30 @@ $(document).ready(function(){
           p2 = tickets['tickets'][1].length;
           p3 = tickets['tickets'][2].length;
           p4 = tickets['tickets'][3].length;
-          console.log(p1_tickets);
-          console.log(p2_tickets);
+          change_reqs = tickets['change'];
+          //console.log(p1_tickets);
+          //console.log(p2_tickets);
           var color='';
           var ins = '';
+          var c=''
+          for(var i in change_reqs){
+            console.log(change_reqs[i]['start']);
+            var st = change_reqs[i]['start'];
+            var stp = change_reqs[i]['stop'];
+            var ticket = change_reqs[i]['ticket_id'];
+            c += '<tr><th scope="row">'+i+'</th><td>Pfizer</td><td>'+ticket+'</td><td>'+st+'  '+stp+'</td></tr>';
+           } jQuery('#changes').html(c);
+	
           for(var i in p1_tickets) {
               if(p1_tickets[i]['Time Left']=='Breached'){
                   color = 'badge-danger';
-              }else if(p1_tickets[i]['Time Left'].split("h")[0]<2 || p1_tickets[i]['Time Left'].split("h")[0].includes("m")){
+              }else if(p1_tickets[i]['Time Left'].split("h")[0]<1 || p1_tickets[i]['Time Left'].split("h")[0].includes("m")){
                   color = 'badge-danger';
-              }else if(p1_tickets[i]['Time Left'].split("h")[0]<4){
+              }else if(p1_tickets[i]['Time Left'].split("h")[0]<2){
                   color = 'badge-warning';
-              }else if(p1_tickets[i]['Time Left'].split("h")[0]<6){
+              }else if(p1_tickets[i]['Time Left'].split("h")[0]<3){
                   color = 'badge-primary';
-              }else if(p1_tickets[i]['Time Left'].split("h")[0]<8){
+              }else if(p1_tickets[i]['Time Left'].split("h")[0]<4){
                   color = 'badge-success';
               };
               if(p1_tickets[i]['Time Left']!=='Breached') {
@@ -48,13 +59,13 @@ $(document).ready(function(){
               console.log(p2_tickets[i]["Time Left"].split("h")[0]);
               if(p2_tickets[i]['Time Left']=='Breached'){
                   color = 'badge-danger';
-              }else if(p2_tickets[i]['Time Left'].split("h")[0]<2 || p2_tickets[i]['Time Left'].split("h")[0].includes("m")){
+              }else if(p2_tickets[i]['Time Left'].split("h")[0]<1 || p2_tickets[i]['Time Left'].split("h")[0].includes("m")){
                   color = 'badge-danger';
-              }else if(p2_tickets[i]['Time Left'].split("h")[0]<4){
+              }else if(p2_tickets[i]['Time Left'].split("h")[0]<2){
                   color = 'badge-warning';
-              }else if(p2_tickets[i]['Time Left'].split("h")[0]<6){
+              }else if(p2_tickets[i]['Time Left'].split("h")[0]<3){
                   color = 'badge-primary';
-              }else if(p2_tickets[i]['Time Left'].split("h")[0]<8){
+              }else if(p2_tickets[i]['Time Left'].split("h")[0]<4){
                   color = 'badge-success';
               };
               if(p2_tickets[i]['Time Left']!=='Breached') {
@@ -120,5 +131,6 @@ $(document).ready(function(){
             }
      });
 
-
+};
+setInterval(myfun, 2000);
 });
